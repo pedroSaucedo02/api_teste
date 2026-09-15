@@ -1,7 +1,5 @@
 package tarefa.java.models;
 
-
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
