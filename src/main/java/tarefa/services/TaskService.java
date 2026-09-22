@@ -45,35 +45,43 @@ public class TaskService  {
     public List<Task> finByUserId(Long UserId){
 
         //chama o UserService para garantir que o usuario existe no banco(lanca execoes se nao existir)
-        this.UserService.findById(UserId);
+        this.userservice.findById(UserId);
     
         //Executa a busca customizada no repositorio filtrando pelo id do usuario
         List<Task> task = this.taskRepository.findByUser_Id(UserId);
 
         //retorna a lista de tarefas
         return task;
-    
+    }
         //garante que a criacao ocorra dentro de uma transação de banco de dados (rolback automatico se falhas)
-        @Transactional 
-        public Task create(Task obj){
+        @Transactional   
+        public Task create (Task obj){
             //valida se o usuario informado no objeto realmente existe no banco e recupera seus dados
             User user = this.userservice.findById(obj.getUser().getId());
         
             //define o ID como null para garantir que o JPA realize um inserção(INSERT) e não uma atualização
-            obj.setId(id:null);
+            obj.setId(null);
         
             //associa a entida User completa e validada a tarefa
-            obk.setUser(user);
+            obj.setUser(user);
 
             //salva a nova tarefa no banco de dados e atualiza 'obj' com o ID gerado
             obj = this.taskRepository.save(obj);
 
-            return ibj;
+            return obj;
         }
-        //garante que a atuazl
-        @Transactional 
-        public newobj(obj.getId();)
-    }
+        //Garante que a atualização ocorra dentro de transação isolada no banco
+        public Task update(Task obj){
+            //Reaproveita o findByID para verificar se atarefa a ser atualizada existe realmente
+            Task newObj = findById(obj.getId());
+
+            //Atualiza apenas o campo descricao do objeto persistido com o novo valo
+            newObj.setDescription(obj.getDescription());
+
+            //Salva a alteração no banco de dados e retorna o objeto atualizado
+            return  this.taskRepository.save(newObj);
+        }
+
     //metodo para deletar uma tarefa pelo ID
     public void delete(long Id){
         //verifica se a tarefa existe antes de tentar deletar

@@ -55,15 +55,15 @@ public class UserService {
     }
 
     @Transactional 
-    public Task update(Task obj){
+    public User update(User obj){
         //Reaproveita o findByID para verificar se atarefa a ser atualizada existe realmente
-        Task newObj = findById(obj.getId());
+        User newObj = findById(obj.getId());
 
         //Atualiza apenas o campo descricao do objeto persistido com o novo valo
-        newObj.setDescription(obj.getDescription());
+        newObj.setPassword(obj.getPassword());
 
         //Salva a alteração no banco de dados e retorna o objeto atualizado
-        return  this.taskRepository.save(newObj);
+        return  this.userRepository.save(newObj);
     }
 
     //Método para deletar uma tarefa pelo Id
@@ -73,7 +73,7 @@ public class UserService {
 
         try{
             //Solicita a remoção da tarefa no banco de dados pelo ID 
-            this.taskRepository.deleteById(Id);
+            this.userRepository.deleteById(Id);
         } catch (Exception e){
             //Capctura execções (como violações de chave estrangeira e lança uma mensagem amigável)
             throw new RuntimeException("Não é posspivel excuir pois não há tarefas relacionadas");
