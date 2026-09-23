@@ -92,7 +92,7 @@ public class TaskService  {
             this.taskRepository.deleteById(Id);
         } catch (Exception e){
             //captura execções (como violações de chave estrangeira e lanca uma mensagem amigavel)
-            throw new RuntimeException("Não é possivel excluir pois não há tarefas relacionadas")
+            throw new RuntimeException("Não é possivel excluir pois não há tarefas relacionadas");
         }
     }
 }

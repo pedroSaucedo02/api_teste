@@ -43,7 +43,7 @@ public class UserService {
         ));
     }
     @Transactional 
-    public User creater(User obj){
+    public User create(User obj){
         
         obj.setId(null);
 
