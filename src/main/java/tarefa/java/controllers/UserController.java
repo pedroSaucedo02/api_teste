@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;// importa anotaca
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder; // importa utilitarios para gerar URI da requisicao atual dinamicamente
 
 import tarefa.java.models.User;
-import tarefa.java.models.User.CreaterUser;
-import tarefa.java.models.User.updateUser;
+import tarefa.java.models.User.createUser;
+import tarefa.java.models.User.UpdateUser;
 import tarefa.services.UserService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,15 +36,32 @@ public class UserController {
     @GetMapping("/{id}")//mapeia a requisicoes HTTP GET na rota "/User/{id}" 
     public  ResponseEntity<User> findById(@PathVariable Long Id){//metodo para buscar usuario por id capturado da URL
         User obj=this.UserService.findById(Id);//invoca a busca do usuario atraves do ID recebido
-        return  ResponseEntity.ok().body(obj) //retorna código HTTP 200(ok) com o obj User no corpo da resposta
+        return  ResponseEntity.ok().body(obj); //retorna código HTTP 200(ok) com o obj User no corpo da resposta
     } // fim do método findBuId
 
-    @PostMapping 
-    public  ResponseEntity<Void> create(@Validated  (CreateUser.class) @RequestBody  User obj){
-        this.UserService.creater(obj);
-            URI url = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{id}").buildAndExpand(obj.getId()).toUri();
-                    return ResponseEntity.created(url).build();
+    @PostMapping //Mapeiai requisições HTTP POST na rota base "/user"(criação de novo usuario)
+    public  ResponseEntity<Void> create(@Validated  (create.class) @RequestBody  User obj){//valida regra de createUser e desserializa o codigo
+        this.UserService.create(obj);//chama a camada de serviço para persistir o novo usuario no banco de dados
+            URI url = ServletUriComponentsBuilder.fromCurrentRequest() //obtem a rota da requisição atual
+                    .path("/{id}").buildAndExpand(obj.getId()).toUri(); //adiciona o Id do usuario gerando o final do caminho da URI
+                    return ResponseEntity.created(url).build(); //retorna código HTTPP 201(created) contendo a URL na cabeçalho location
+      }
+
+      @PutMapping("/{Id}")//mapeia requisiçoes HTTP PUT na rota base "/user/{Id}"(atualização do usuario)
+      public ResponseEntity<Void>Update(@Validated (UpdateUser.class)@RequestBody User obj, @PathVariable Long Id){//aplica a regra de updateUser e recebe Id e JSON
+            obj.setId(Id);//garante que o Id do objeto a ser atualizado corrensponda ao ID informado no parametro da URL
+        this.UserService.update(obj);//executa a atualizacao da senha do usuario no banco de dados
+        return ResponseEntity.noContent().build();// retorna o código HTTP 204(no content) indicando sucesso sem corpo de resposta
+      }
+
+      @DeleteMapping ("/{Id}")//mapeiai requisicao HTTP Delete na rota "/user/{Id}"(exclusao do usario)
+      public ResponseEntity<Void> delete(@PathVariable Long Id){//captura o Id da URL a ser deletado
+      this.UserService.delete(Id); // invoca o método de deleção ao serviço
+      return ResponseEntity.noContent().build();//retorna código HTTP 204(no content) confirmando a exclusão
+    }
+
+
+
       }
 
 
@@ -56,5 +73,3 @@ public class UserController {
 
 
 
-
-}
