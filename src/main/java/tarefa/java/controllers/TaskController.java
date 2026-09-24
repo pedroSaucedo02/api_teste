@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import tarefa.java.models.Task;
-import tarefa.services.TaskService;
+import tarefa.java.Services.TaskService;
 
 @RestController 
 @RequestMapping ("/task")
@@ -31,7 +31,7 @@ public class TaskController{
     private TaskService taskService;
 
 @GetMapping("/{id}")
-public ResponseEntity<Task> findById(@PathVariable Long Id){
+public ResponseEntity<Task> findByuserId(@PathVariable Long Id){
     Task obj = this.taskService.findById(Id);
     return ResponseEntity.ok().body(obj);
 }

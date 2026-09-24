@@ -1,5 +1,5 @@
 //pacote onde está a classe de serviço no projeto
-package tarefa.services;
+package tarefa.java.Services;
 
 //importa List da biblioteca padrao do java para manipular colecoes de objetos
 import java.util.List;
@@ -41,6 +41,13 @@ public class TaskService  {
             "Tarefa não encontrada! Id:" + Id + ",Tipo:" + Task.class.getName()
         ));
     }
+
+    public List<Task> findByUserId(Long userId){
+        List<Task> task = this.taskRepository.findByUser_Id(userId);
+        return task;
+    }
+
+
     //metodo para buscar todas as tarefas vinculadar a um determinado usuario
     public List<Task> finByUserId(Long UserId){
 
