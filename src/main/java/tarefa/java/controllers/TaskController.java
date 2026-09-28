@@ -1,9 +1,8 @@
 package tarefa.java.controllers;
 
-import java.net.URI; //importa a classe URI para construir e manipular http de novos recursos
-import java.util.List; //importa a interface List para manipular onde a classe controller está localizada 
+import java.net.URI;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,42 +21,47 @@ import tarefa.java.models.Task;
 import tarefa.java.Services.TaskService;
 
 @RestController 
-@RequestMapping ("/task")
+@RequestMapping("/task")
 @Validated 
-
-public class TaskController{
+public class TaskController {
 
     @Autowired 
     private TaskService taskService;
 
-@GetMapping("/{id}")
-public ResponseEntity<Task> findByuserId(@PathVariable Long Id){
-    Task obj = this.taskService.findById(Id);
-    return ResponseEntity.ok().body(obj);
-}
-    @GetMapping ("/user/{userid}")
-    public ResponseEntity<List<Task>> findByUserId(@PathVariable Long userId){
-        List<Task> obj = this.taskService.finByUserId(userId);
+    // 1. Busca uma tarefa específica por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> findById(@PathVariable Long id) {
+        Task obj = this.taskService.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody Task obj){
+    // 2. Busca todas as tarefas associadas a um ID de usuário (corrigido {userId})
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Task>> findByUserId(@PathVariable Long userId) {
+        List<Task> obj = this.taskService.findByUserId(userId); // Corrigido 'findByUserId'
+        return ResponseEntity.ok().body(obj);
+    }
+
+    // 3. Criação de nova tarefa (corrigido para @PostMapping)
+    @PostMapping
+    public ResponseEntity<Void> create(@Valid @RequestBody Task obj) {
         this.taskService.create(obj);
         URI url = ServletUriComponentsBuilder.fromCurrentRequest()
-        .path("/{Id}").buildAndExpand(obj.getId()).toUri();
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(url).build();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> update(@Valid @RequestBody Task obj, @PathVariable Long id){
+    // 4. Atualização de tarefa (corrigido para @PutMapping)
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@Valid @RequestBody Task obj, @PathVariable Long id) {
         obj.setId(id);
         this.taskService.update(obj);
         return ResponseEntity.noContent().build();
     }
     
-    @DeleteMapping("/id")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    // 5. Exclusão de tarefa (corrigido para "/{id}")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.taskService.delete(id);
         return ResponseEntity.noContent().build();
     }
