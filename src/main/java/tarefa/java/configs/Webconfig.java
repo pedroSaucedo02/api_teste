@@ -1,16 +1,17 @@
 package tarefa.java.configs;
 
-import org.springframework.context.annotation.Configuration;// importa a anotação de configuracao do spring container
-import org.springframework.web.servlet.config.annotation.CorsRegistry;//importa a classe responsavel por registrar as regras do CORS
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;//importa a anotacao que habilita os recursos do spring web MVC
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;//importa a interface de customização do Spring MVC
+import org.springframework.context.annotation.Configuration; // Importa a anotação de configuração do Spring Container
+import org.springframework.web.servlet.config.annotation.CorsRegistry; // importa a classe responsável por registrar as regras do CORS
+import org.springframework.web.servlet.config.annotation.EnableWebMvc; // import a anotação que habilita os recursos do spring Web MVC
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer; // importa a interface de customização do Spring MVC
 
-@Configuration //indica que essa classe possui configurações do Beans que devem ser inicializada com o spring Ioc
-@EnableWebMvc // importa a ativa o suporte básico as requisições e controladores Web MVC do spring
-public class Webconfig implements WebMvcConfigurer{// classe de configuração que implementa  o contrato de  customização
-    
-    @Override //sobreescreve o método padrao de mapeamento CORS padrao da interface WebMvcConfigures
-    public void addCorsMappings(CorsRegistry registry){//método incdicado pelo spring para registrar as regras do Cors
-        registry.addMapping("/**");//libera qualquer rota da API(Coringa /**) para aceitar chamada externas 
+@Configuration // indica que essa classe possui configuraçõe de Beans que devem ser inicializados com o Spring Ioc
+@EnableWebMvc // importa e ativa o suporte básico as requisições e controladores Web Mvc do Spring
+public class WebConfig implements WebMvcConfigurer{ // Classe de cinfiguração que implementa o contrato de customização do Spring
+  
+
+    @Override // Sobreescreve o método de mapeamento CORS padrão da interface WebMvcConfigurer
+    public void addCorsMappings(CorsRegistry registry){ // Método indicado pelo Spring para registrar as regras do CORS
+        registry.addMapping("/**"); //Libera qualquer rota da API(coringa "/**") para aceitar chamadas externas
     }
 }
